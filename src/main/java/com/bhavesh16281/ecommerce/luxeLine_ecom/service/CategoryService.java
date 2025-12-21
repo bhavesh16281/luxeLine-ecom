@@ -1,13 +1,13 @@
 package com.bhavesh16281.ecommerce.luxeLine_ecom.service;
 
-import com.bhavesh16281.ecommerce.luxeLine_ecom.model.Category;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.payload.CategoryDTO;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.payload.CategoryResponse;
 
-import java.util.List;
 
 public interface CategoryService {
 
-    List<Category> getAllCategories();
-    void createCategory(Category category);
-    String deleteCategory(Long id);
-    Category updateCategory(Category category, Long id);
+    CategoryResponse getAllCategories();
+    CategoryDTO createCategory(CategoryDTO CategoryDto);
+    CategoryDTO deleteCategory(Long id);
+    CategoryDTO updateCategory(CategoryDTO CategoryDto, Long id);
 }
