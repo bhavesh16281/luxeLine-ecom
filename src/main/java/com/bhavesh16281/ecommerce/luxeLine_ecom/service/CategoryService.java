@@ -6,7 +6,7 @@ import com.bhavesh16281.ecommerce.luxeLine_ecom.payload.CategoryResponse;
 
 public interface CategoryService {
 
-    CategoryResponse getAllCategories();
+    CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
     CategoryDTO createCategory(CategoryDTO CategoryDto);
     CategoryDTO deleteCategory(Long id);
     CategoryDTO updateCategory(CategoryDTO CategoryDto, Long id);
