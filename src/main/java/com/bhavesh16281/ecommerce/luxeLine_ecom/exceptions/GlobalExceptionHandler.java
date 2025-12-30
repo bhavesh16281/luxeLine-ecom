@@ -1,6 +1,6 @@
 package com.bhavesh16281.ecommerce.luxeLine_ecom.exceptions;
 
-import com.bhavesh16281.ecommerce.luxeLine_ecom.payload.APIResponse;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

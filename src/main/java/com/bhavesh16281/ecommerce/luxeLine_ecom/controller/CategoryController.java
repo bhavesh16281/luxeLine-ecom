@@ -1,8 +1,8 @@
 package com.bhavesh16281.ecommerce.luxeLine_ecom.controller;
 
 import com.bhavesh16281.ecommerce.luxeLine_ecom.config.AppConstants;
-import com.bhavesh16281.ecommerce.luxeLine_ecom.payload.CategoryDTO;
-import com.bhavesh16281.ecommerce.luxeLine_ecom.payload.CategoryResponse;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.CategoryDTO;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.CategoryResponse;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

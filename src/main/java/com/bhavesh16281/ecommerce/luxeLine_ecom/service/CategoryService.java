@@ -1,7 +1,7 @@
 package com.bhavesh16281.ecommerce.luxeLine_ecom.service;
 
-import com.bhavesh16281.ecommerce.luxeLine_ecom.payload.CategoryDTO;
-import com.bhavesh16281.ecommerce.luxeLine_ecom.payload.CategoryResponse;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.CategoryDTO;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.CategoryResponse;
 
 
 public interface CategoryService {
