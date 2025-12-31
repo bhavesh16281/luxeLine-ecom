@@ -1,6 +1,7 @@
 package com.bhavesh16281.ecommerce.luxeLine_ecom.service;
 
 import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.ProductDTO;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.ProductResponse;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.exceptions.ResourceNotFoundException;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.model.Category;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.model.Product;
@@ -9,6 +10,8 @@ import com.bhavesh16281.ecommerce.luxeLine_ecom.repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -33,5 +36,29 @@ public class ProductServiceImpl implements ProductService{
         Product addedProduct = productRepository.save(product);
 
         return modelMapper.map(addedProduct, ProductDTO.class);
+    }
+
+    @Override
+    public ProductResponse getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductDTO> productDTOs = products.stream()
+                .map(product->modelMapper.map(product,ProductDTO.class))
+                .toList();
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContent(productDTOs);
+        return productResponse;
+    }
+
+    @Override
+    public ProductResponse searchByCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(()->new ResourceNotFoundException("Category","categoryId",categoryId));
+        List<Product> products = productRepository.findByCategoryOrderByPriceAsc(category);
+        List<ProductDTO> productDTOs = products.stream()
+                .map(product->modelMapper.map(product,ProductDTO.class))
+                .toList();
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContent(productDTOs);
+        return productResponse;
     }
 }
