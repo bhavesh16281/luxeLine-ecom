@@ -2,16 +2,22 @@ package com.bhavesh16281.ecommerce.luxeLine_ecom.service;
 
 import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.ProductDTO;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.ProductResponse;
-import com.bhavesh16281.ecommerce.luxeLine_ecom.model.Product;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface ProductService {
-    ProductDTO addProduct(Long categoryId, Product product);
+    ProductDTO addProduct(Long categoryId, ProductDTO productDto);
 
-    ProductResponse getAllProducts();
+    ProductResponse getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
-    ProductResponse searchByCategory(Long categoryId);
+    ProductResponse searchByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
-    ProductResponse searchProductByKeyword(String keyword);
+    ProductResponse searchProductByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
-    ProductDTO updateProduct(Product product, Long productId);
+    ProductDTO updateProduct(ProductDTO productDTO, Long productId);
+
+    ProductDTO deleteProduct(Long productId);
+
+    ProductDTO updateProductimage(Long productId, MultipartFile image) throws IOException;
 }
