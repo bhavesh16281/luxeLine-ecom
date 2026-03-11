@@ -1,4 +1,4 @@
-package com.bhavesh16281.ecommerce.luxeLine_ecom.security;
+package com.bhavesh16281.ecommerce.luxeLine_ecom.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
