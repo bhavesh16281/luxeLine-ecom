@@ -1,14 +1,18 @@
 package com.bhavesh16281.ecommerce.luxeLine_ecom.security.jwt;
 
+import com.bhavesh16281.ecommerce.luxeLine_ecom.security.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.WebUtils;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -24,6 +28,10 @@ public class JwtUtils {
     @Value("${spring.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
+    @Value("${spring.app.jwtCookieName}")
+    private String jwtCookie;
+
+    /* This logic is part of JWT token based authentication
     public String getJwtFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         logger.debug("Authorization Header: {}", bearerToken);
@@ -32,7 +40,46 @@ public class JwtUtils {
         }
         return null;
     }
+     */
 
+    //This method is part of JWT Cookie based authentication
+    public String getJwtFromCookies(HttpServletRequest request) {
+        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
+        if(cookie != null){
+            return cookie.getValue();
+        }else{
+            return null;
+        }
+    }
+
+    //This method is part of JWT Cookie based authentication
+    public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
+        String jwt = generateTokenFromUsername(userPrincipal.getUsername());
+        return ResponseCookie.from(jwtCookie, jwt)
+                .path("/api")
+                .maxAge(60*10*10)
+                .httpOnly(false)
+                .build();
+    }
+
+    public ResponseCookie getCleanJwtCookie() {
+        return ResponseCookie.from(jwtCookie, null)
+                .path("/api")
+                .build();
+    }
+
+    //This method is part of JWT Cookie based authentication
+    public String generateTokenFromUsername(String username) {
+
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(new Date())
+                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(key())
+                .compact();
+    }
+
+    /* This logic is part of JWT token based authentication
     public String generateTokenFromUsername(UserDetails userDetails) {
         String username = userDetails.getUsername();
         return Jwts.builder()
@@ -42,6 +89,7 @@ public class JwtUtils {
                 .signWith(key())
                 .compact();
     }
+     */
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser()
