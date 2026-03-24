@@ -1,11 +1,14 @@
 package com.bhavesh16281.ecommerce.luxeLine_ecom.service;
 
+import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.CartDTO;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.ProductDTO;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.ProductResponse;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.exceptions.APIException;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.exceptions.ResourceNotFoundException;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.model.Cart;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.model.Category;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.model.Product;
+import com.bhavesh16281.ecommerce.luxeLine_ecom.repositories.CartRepository;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.repositories.CategoryRepository;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
@@ -32,6 +35,10 @@ public class ProductServiceImpl implements ProductService{
     private ModelMapper modelMapper;
     @Autowired
     private FileService fileService;
+    @Autowired
+    CartRepository cartRepository;
+    @Autowired
+    CartService cartService;
 
     @Value("${project.image}")
     private String path;
@@ -156,6 +163,21 @@ public class ProductServiceImpl implements ProductService{
                 - ((product.getDiscount()*0.01) * product.getPrice());
         foundProduct.setSpecialPrice(specialPrice);
         Product updatedProduct = productRepository.save(foundProduct);
+
+        List<Cart> carts = cartRepository.findCartsByProductId(productId);
+        List<CartDTO> cartDTOs = carts.stream()
+                .map(cart -> {
+                    CartDTO cartDto = modelMapper.map(cart, CartDTO.class);
+                    List<ProductDTO> products = cart.getCartItems().stream()
+                            .map(p -> modelMapper.map(p.getProduct(), ProductDTO.class))
+                            .toList();
+
+                    cartDto.setProducts(products);
+                    return cartDto;
+                }).toList();
+
+        cartDTOs.forEach(cart -> cartService.updateProductInCarts(cart.getCartId(),productId));
+
         return modelMapper.map(updatedProduct, ProductDTO.class);
     }
 
@@ -163,6 +185,9 @@ public class ProductServiceImpl implements ProductService{
     public ProductDTO deleteProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new ResourceNotFoundException("Product","productId",productId));
+
+        List<Cart> carts = cartRepository.findCartsByProductId(productId);
+        carts.forEach(cart -> cartService.deleteProductFromCart(cart.getCartId(),productId) );
         productRepository.delete(product);
         return modelMapper.map(product, ProductDTO.class);
     }
