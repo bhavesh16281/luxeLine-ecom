@@ -4,6 +4,7 @@ import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.OrderDTO;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.dto.OrderRequestDTO;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.service.OrderService;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.util.AuthUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class OrderController {
     @Autowired
     private AuthUtil authUtil;
 
+    @Tag(name = "Order API's", description = "Endpoints for managing orders")
     @PostMapping("/order/users/payments/{paymentMethod}")
     public ResponseEntity<OrderDTO> orderProducts(@PathVariable String paymentMethod, @RequestBody OrderRequestDTO orderRequestDTO) {
 

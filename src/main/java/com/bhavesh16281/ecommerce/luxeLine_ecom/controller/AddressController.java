@@ -5,6 +5,7 @@ import com.bhavesh16281.ecommerce.luxeLine_ecom.model.Address;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.model.User;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.service.AddressService;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.util.AuthUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class AddressController {
     @Autowired
     AuthUtil authUtil;
 
+    @Tag(name = "Address API's", description = "Endpoints for managing user addresses")
     @PostMapping("/addresses")
     public ResponseEntity<AddressDTO> createAddress(@Valid
                                                          @RequestBody AddressDTO addressDto) {
@@ -31,6 +33,7 @@ public class AddressController {
         return new ResponseEntity<>(savedAddressDto,HttpStatus.CREATED);
     }
 
+    @Tag(name = "Address API's", description = "Endpoints for managing user addresses")
     @GetMapping("/addresses")
     public ResponseEntity<List<AddressDTO>> getAddresses() {
 
@@ -38,6 +41,7 @@ public class AddressController {
         return new ResponseEntity<>(addressDTOList,HttpStatus.OK);
     }
 
+    @Tag(name = "Address API's", description = "Endpoints for managing user addresses")
     @GetMapping("/addresse/{addressId}")
     public ResponseEntity<AddressDTO> getAddressById(@PathVariable("addressId") Long addressId) {
 
@@ -45,6 +49,7 @@ public class AddressController {
         return new ResponseEntity<>(addressDTO,HttpStatus.OK);
     }
 
+    @Tag(name = "Address API's", description = "Endpoints for managing user addresses")
     @GetMapping("/users/addresses")
     public ResponseEntity<List<AddressDTO>> getAddressesByUser() {
 
@@ -53,6 +58,7 @@ public class AddressController {
         return new ResponseEntity<>(addressDTOList,HttpStatus.OK);
     }
 
+    @Tag(name = "Address API's", description = "Endpoints for managing user addresses")
     @PutMapping("/address/{addressId}")
     public ResponseEntity<AddressDTO> updateAddress(@PathVariable Long addressId, @RequestBody AddressDTO addressDTO) {
 
@@ -60,6 +66,7 @@ public class AddressController {
         return new ResponseEntity<>(updatedAddress,HttpStatus.OK);
     }
 
+    @Tag(name = "Address API's", description = "Endpoints for managing user addresses")
     @DeleteMapping("/address/{addressId}")
     public ResponseEntity<String> deleteAddress(@PathVariable Long addressId) {
 

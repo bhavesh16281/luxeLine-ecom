@@ -11,6 +11,7 @@ import com.bhavesh16281.ecommerce.luxeLine_ecom.security.request.SignupRequest;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.security.response.MessageResponse;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.security.response.UserInfoResponse;
 import com.bhavesh16281.ecommerce.luxeLine_ecom.security.service.UserDetailsImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -44,6 +45,7 @@ public class AuthController {
     @Autowired
     RoleRepository roleRepository;
 
+    @Tag(name = "Authentication API's", description = "Endpoints for user authentication and registration")
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         Authentication authentication;
@@ -69,6 +71,7 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(response); //This line is part of JWT Cookie based authentication
     }
 
+    @Tag(name = "Authentication API's", description = "Endpoints for user authentication and registration")
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody  SignupRequest signUpRequest) {
 
@@ -116,6 +119,7 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
+    @Tag(name = "Authentication API's", description = "Endpoints for user authentication and registration")
     @GetMapping("/username")
     public String currentUsername(Authentication authentication) {
         if(authentication != null){
@@ -125,6 +129,7 @@ public class AuthController {
         }
     }
 
+    @Tag(name = "Authentication API's", description = "Endpoints for user authentication and registration")
     @GetMapping("/user")
     public ResponseEntity<UserInfoResponse> currentUserDetails(Authentication authentication) {
 
@@ -139,6 +144,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @Tag(name = "Authentication API's", description = "Endpoints for user authentication and registration")
     @PostMapping("/signout")
     public ResponseEntity<?> signOutUser(){
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
